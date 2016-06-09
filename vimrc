@@ -45,7 +45,6 @@ Helptags
 
 " show line numbers
 set number
-set rnu
 
 " Sets how many lines of history VIM has to remember
 set history=700
@@ -348,7 +347,8 @@ map <leader>q :e ~/buffer<cr>
 map <leader>pp :setlocal paste!<cr>
 
 " FZF support
-set rtp+=~/.fzf
+let g:fzf_launcher = "/Users/Pavel.Dohnal/bin/In_a_new_term_function %s"
+set rtp+=/usr/local/opt/fzf
 map <F2> :FZF<cr>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -369,21 +369,10 @@ map gF $hgf
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Linting
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" ,cs compiles Coffeescript. Shows the resulting JS in a horizontal split
-map <leader>cs :CoffeeCompile<cr>
 
 " JS linting
 let g:syntastic_javascript_checkers = ['eslint']
 autocmd FileType javascript let b:syntastic_checkers = findfile('.eslintrc', '.;') != '' ? ['eslint'] : ['eslint']
-
-" Coffeescript Linting
-let g:syntastic_coffee = ['coffeelint']
-
-" Haskell linting
-let g:syntastic_haskell_checkers = ['hdevtools', 'hlint']
-
-" Use the installed style guide
-let g:syntastic_coffee_coffeelint_args = "--csv --file ~/.vim/bundle/coffeescript-style-guide/coffeelint.json" 
 
 " Set mode to active (runs whenever you save) and use the location list (:ll)
 let g:syntastic_mode_map = { "mode": "active" }
@@ -401,14 +390,6 @@ map <leader>e :Errors<cr>
 
 " Close Errors list
 map <leader>lc :lclose<cr>
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => ghc-mod
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-map <silent> tw :GhcModTypeInsert<CR>
-map <silent> ts :GhcModSplitFunCase<CR>
-map <silent> tq :GhcModType<CR>
-map <silent> te :GhcModTypeClear<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Helper functions
