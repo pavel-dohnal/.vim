@@ -37,6 +37,9 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+set nocompatible
+
 " Pathogen package manager
 execute pathogen#infect()
 
@@ -66,6 +69,16 @@ nmap <leader>w :wa<cr>
 
 " Recursively check up the folder structure for tag files
 set tags=tags;/
+
+" Open NERDTree automatically when vim starts up if no files were specified
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+
+" toggle nerd tree with n
+nmap <leader>n :NERDTreeToggle<cr>
+
+let g:NERDTreeMapOpenVSplit = "v"
+let g:NERDTreeMapOpenSplit = "s"
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => VIM user interface
@@ -113,6 +126,9 @@ set showmatch
 " How many tenths of a second to blink when matching brackets
 set mat=2
 
+" Show relative numbers
+set relativenumber
+
 " No annoying sound on errors
 set noerrorbells
 set novisualbell
@@ -122,6 +138,9 @@ set tm=500
 " window split defaults
 set splitbelow
 set splitright
+
+" y goes to system clipboard
+set clipboard=unnamed
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Colors and Fonts
@@ -147,9 +166,10 @@ if has("gui_running")
     set guioptions-=r
     set guioptions-=R
     set guioptions-=m
-    set guifont=Monaco\ 10
-    colorscheme atom-dark-256
 endif
+
+set guifont=Monaco\ 13
+colorscheme atom-dark-256
 
 " Set utf8 as standard encoding and en_US as the standard language
 set encoding=utf8
@@ -188,6 +208,11 @@ set wrap "Wrap lines
 
 " Lints XML in the current file
 map <leader>xx :%!xmllint --format -<CR>
+
+set history=1000         " remember more commands and search history
+set undolevels=1000      " use many muchos levels of undo
+set title                " change the terminal's title
+
 
 """"""""""""""""""""""""""""""
 " => Visual mode related
@@ -278,7 +303,6 @@ func! DeleteTrailingWS()
   exe "normal `z"
 endfunc
 
-autocmd BufWrite *.py :call DeleteTrailingWS()
 autocmd BufWrite *.coffee :call DeleteTrailingWS()
 autocmd BufWrite *.cjsx :call DeleteTrailingWS()
 autocmd BufWrite *.js :call DeleteTrailingWS()
@@ -364,7 +388,7 @@ map <F2> :FZF<cr>
 " => Filetypes for gf
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 :set suffixesadd+=.js,.coffee,.cjsx,.json,.scss,.hs,.lhs
-map gF $hgf
+map gF $hhgf
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Linting
@@ -372,7 +396,7 @@ map gF $hgf
 
 " JS linting
 let g:syntastic_javascript_checkers = ['eslint']
-autocmd FileType javascript let b:syntastic_checkers = findfile('.eslintrc', '.;') != '' ? ['eslint'] : ['eslint']
+let g:syntastic_javascript_eslint_exec = 'eslint_d'
 
 " Set mode to active (runs whenever you save) and use the location list (:ll)
 let g:syntastic_mode_map = { "mode": "active" }
